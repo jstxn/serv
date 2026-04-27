@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="513" height="367" alt="Screenshot 2026-04-27 at 10 59 40 AM" src="https://github.com/user-attachments/assets/d348f4b8-09d3-43a1-8f09-cea91bca00aa" />
+</p>
+
 # Serv
 
 Serv is a small macOS menu bar app for starting and stopping project dev servers.

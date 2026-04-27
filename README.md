@@ -74,3 +74,7 @@ git push origin v0.1.0
 ```
 
 The release workflow runs tests, packages `Serv.app.zip`, and attaches it to the release. Signing and notarization are not configured yet.
+
+## License
+
+MIT

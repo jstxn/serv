@@ -548,24 +548,38 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         alert.addButton(withTitle: "Save")
         alert.addButton(withTitle: "Cancel")
 
+        let accessoryView = NSView(frame: NSRect(x: 0, y: 0, width: 420, height: 96))
         let stack = NSStackView()
         stack.orientation = .vertical
         stack.spacing = 8
+        stack.translatesAutoresizingMaskIntoConstraints = false
 
+        let nameLabel = NSTextField(labelWithString: "Name")
         let nameField = NSTextField(string: "Custom")
         nameField.placeholderString = "Name"
+        nameField.translatesAutoresizingMaskIntoConstraints = false
 
+        let commandLabel = NSTextField(labelWithString: "Command")
         let commandField = NSTextField(string: "")
         commandField.placeholderString = "docker compose up"
         commandField.cell?.wraps = false
+        commandField.translatesAutoresizingMaskIntoConstraints = false
 
+        stack.addArrangedSubview(nameLabel)
         stack.addArrangedSubview(nameField)
+        stack.addArrangedSubview(commandLabel)
         stack.addArrangedSubview(commandField)
+        accessoryView.addSubview(stack)
         NSLayoutConstraint.activate([
-            nameField.widthAnchor.constraint(equalToConstant: 320),
-            commandField.widthAnchor.constraint(equalToConstant: 320)
+            stack.leadingAnchor.constraint(equalTo: accessoryView.leadingAnchor),
+            stack.trailingAnchor.constraint(equalTo: accessoryView.trailingAnchor),
+            stack.topAnchor.constraint(equalTo: accessoryView.topAnchor),
+            nameField.widthAnchor.constraint(equalToConstant: 420),
+            nameField.heightAnchor.constraint(equalToConstant: 24),
+            commandField.widthAnchor.constraint(equalToConstant: 420),
+            commandField.heightAnchor.constraint(equalToConstant: 24)
         ])
-        alert.accessoryView = stack
+        alert.accessoryView = accessoryView
 
         NSApp.activate(ignoringOtherApps: true)
         guard alert.runModal() == .alertFirstButtonReturn else {

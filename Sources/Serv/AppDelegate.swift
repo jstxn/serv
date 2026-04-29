@@ -1,4 +1,5 @@
 import AppKit
+import ServiceManagement
 import ServCore
 
 @MainActor
@@ -76,6 +77,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let stopAllItem = NSMenuItem(title: "Stop All", action: #selector(stopAll), keyEquivalent: "")
         stopAllItem.target = self
         menu.addItem(stopAllItem)
+
+        let launchAtLoginItem = NSMenuItem(title: "Launch at Login", action: #selector(toggleLaunchAtLogin), keyEquivalent: "")
+        launchAtLoginItem.target = self
+        launchAtLoginItem.state = launchAtLoginEnabled ? .on : .off
+        menu.addItem(launchAtLoginItem)
+
+        menu.addItem(.separator())
 
         let quitItem = NSMenuItem(title: "Quit Serv", action: #selector(quit), keyEquivalent: "q")
         quitItem.target = self
@@ -539,6 +547,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc private func quit() {
         NSApplication.shared.terminate(nil)
+    }
+
+    private var launchAtLoginEnabled: Bool {
+        SMAppService.mainApp.status == .enabled
+    }
+
+    @objc private func toggleLaunchAtLogin() {
+        do {
+            if launchAtLoginEnabled {
+                try SMAppService.mainApp.unregister()
+            } else {
+                try SMAppService.mainApp.register()
+            }
+        } catch {
+            showAlert(title: "Launch at Login", message: "Could not update setting: \(error.localizedDescription)")
+        }
+        rebuildMenu()
     }
 
     private func promptForCustomCommand(projectName: String, directory: URL) -> DevCommand? {
